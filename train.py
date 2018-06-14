@@ -83,7 +83,8 @@ def train():
     elif args.dataset == 'VOC':
         #if args.dataset_root == COCO_ROOT:
         #    parser.error('Must specify dataset if specifying dataset_root')
-        cfg = voc
+        #cfg = voc
+        cfg = ssd_512
         dataset = VOCDetection(root=args.dataset_root,
                                transform=SSDAugmentation(cfg['min_dim'],
                                                          MEANS))
@@ -92,7 +93,7 @@ def train():
         import visdom
         viz = visdom.Visdom()
 
-    ssd_net = build_ssd('train', cfg['min_dim'], cfg['num_classes'])
+    ssd_net = build_ssd('train', cfg['min_dim'], cfg['num_classes'], cfg)
     net = ssd_net
 
     if args.cuda:
