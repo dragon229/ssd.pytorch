@@ -83,8 +83,8 @@ def train():
     elif args.dataset == 'VOC':
         #if args.dataset_root == COCO_ROOT:
         #    parser.error('Must specify dataset if specifying dataset_root')
-        #cfg = voc
-        cfg = ssd_512
+        cfg = voc
+        #cfg = ssd_512
         dataset = VOCDetection(root=args.dataset_root,
                                transform=SSDAugmentation(cfg['min_dim'],
                                                          MEANS))
@@ -163,7 +163,10 @@ def train():
             adjust_learning_rate(optimizer, args.gamma, step_index)
 
         # load train data
-        images, targets = next(batch_iterator)
+        try:
+            images, targets = next(batch_iterator)
+        except:
+            batch_iterator = iter(data_loader)
 
         if args.cuda:
             images = Variable(images.cuda())
